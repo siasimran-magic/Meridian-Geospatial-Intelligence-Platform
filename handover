@@ -1,0 +1,465 @@
+# Meridian Geospatial Intelligence Platform
+## Person 1 → Person 2 Handover Document
+
+**Repository:** https://github.com/siasimran-magic/Meridian-Geospatial-Intelligence-Platform  
+**Handover owner:** Person 1  
+**Receiving developer:** Person 2  
+**Project:** DBMS Mini Project — Geospatial Intelligence Platform
+
+---
+
+# 1. Project Overview
+
+Meridian is a geospatial intelligence platform that allows users to discover nearby places, search using spatial filters, view locations on an interactive map, and access review information.
+
+The project uses multiple database technologies:
+
+| Technology | Responsibility |
+|---|---|
+| PostgreSQL 16 | Relational data storage |
+| PostGIS 3.7 | Geographic data and spatial queries |
+| pgvector 0.8.7 | Vector embeddings and semantic search |
+| MongoDB 8.0 | GPS trajectory storage and analytics |
+| Next.js 16 | Frontend and API routes |
+| React Leaflet 5 | Interactive map |
+| Docker Compose | Database infrastructure |
+
+The application is built to demonstrate advanced DBMS concepts, including spatial indexing, document databases, vector similarity search, transactions, triggers, full-text search and aggregation.
+
+# 2. Current Project Status
+
+Person 1 has completed the following:
+
+- Docker-based PostgreSQL/PostGIS and MongoDB infrastructure.
+- PostgreSQL relational schema and relationships.
+- Spatial indexes and nearby-place SQL functions.
+- Opening-hours functions and review summary view.
+- Database triggers and audit logging.
+- Seed data and SQL verification scripts.
+- Next.js spatial search APIs.
+- Interactive Leaflet map with markers and filters.
+- User registration and login.
+- Password hashing and session management.
+- Role-based authorization.
+- Admin-protected API endpoint.
+- Spatial map runtime bug fix.
+
+The following checks have passed:
+
+- `npm run lint`
+- `npm run build`
+- PostgreSQL migration and seed verification.
+- Spatial API checks.
+- Authentication and authorization checks.
+- Map rendering was visually inspected before the authentication work; the subsequent Leaflet lifecycle issue was fixed and the user confirmed that the app works again.
+
+# 3. Repository Structure
+
+Important existing files and directories:
+
+```text
+dbms-miniproj/
+│
+├── docker-compose.yml
+├── README.md
+├── .env.example
+│
+├── database/
+│   ├── Dockerfile
+│   ├── init/
+│   │   └── 01-extensions.sql
+│   ├── migrations/
+│   │   ├── 001_initial_schema.sql
+│   │   └── 002_authentication.sql
+│   ├── seeds/
+│   │   └── 001_demo_data.sql
+│   ├── queries/
+│   │   ├── nearby_places.sql
+│   │   └── review_keyword_search.sql
+│   └── tests/
+│       ├── verify.sql
+│       └── README.md
+│
+├── docs/
+│   ├── architecture.md
+│   ├── data-dictionary.md
+│   ├── er-diagram.mmd
+│   ├── integration-contracts.md
+│   ├── spatial-api.md
+│   └── authentication.md
+│
+└── web/
+    ├── app/
+    │   ├── api/
+    │   ├── login/
+    │   ├── register/
+    │   └── ...
+    ├── components/
+    │   ├── MapCanvas.tsx
+    │   ├── SpatialSearch.tsx
+    │   └── AuthForm.tsx
+    ├── lib/
+    │   ├── db.ts
+    │   └── auth.ts
+    ├── types/
+    │   └── places.ts
+    ├── .env.example
+    └── package.json
+```
+
+Consult the actual repository for the latest file structure.
+
+# 4. Running the Existing Project
+
+## Prerequisites
+
+Install:
+
+- Node.js
+- npm
+- Git
+- Docker Desktop with WSL2 support
+- MongoDB Compass (optional, for inspecting MongoDB)
+
+## Step 1: Clone the repository
+
+```bash
+git clone https://github.com/siasimran-magic/Meridian-Geospatial-Intelligence-Platform.git
+cd Meridian-Geospatial-Intelligence-Platform
+```
+
+Check the available branches:
+
+```bash
+git branch -a
+```
+
+Use the branch containing Person 1's completed work.
+
+## Step 2: Configure environment variables
+
+Create the local environment files using the committed examples:
+
+```powershell
+Copy-Item .\.env.example .\.env
+Copy-Item .\web\.env.example .\web\.env.local
+```
+
+Review the example files and configure the local database connection details.
+
+Set `AUTH_SESSION_SECRET` in `web/.env.local` using a generated secret:
+
+```bash
+node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"
+```
+
+Never commit `.env` or `web/.env.local`.
+
+## Step 3: Start the databases
+
+From the project root:
+
+```bash
+docker compose up -d --build
+```
+
+Check container status:
+
+```bash
+docker compose ps
+```
+
+PostgreSQL runs on port 5432 by default.
+
+**MongoDB port note:** The original development machine had a local MongoDB service occupying port 27017, so its Docker container used host port 27018. Check the committed Compose configuration and your local `.env` before connecting.
+
+## Step 4: Apply PostgreSQL migrations
+
+Apply migrations in order, only if they have not already been applied:
+
+```powershell
+Get-Content -Raw .\database\migrations\001_initial_schema.sql |
+docker compose exec -T postgres psql -v ON_ERROR_STOP=1 -U geointel_dev -d geointel
+```
+
+```powershell
+Get-Content -Raw .\database\migrations\002_authentication.sql |
+docker compose exec -T postgres psql -v ON_ERROR_STOP=1 -U geointel_dev -d geointel
+```
+
+Do not blindly rerun migrations against an existing database unless their idempotency has been verified.
+
+The demo seed data is in:
+
+```text
+database/seeds/001_demo_data.sql
+```
+
+Do not reinsert seed data unnecessarily.
+
+## Step 5: Start the Next.js application
+
+```bash
+cd web
+npm ci
+npm run dev
+```
+
+Open:
+
+http://localhost:3000
+
+# 5. Existing PostgreSQL Database
+
+The PostgreSQL database is named:
+
+```text
+geointel
+```
+
+The initial schema includes these tables:
+
+| Table | Purpose |
+|---|---|
+| users | User accounts |
+| categories | Place categories |
+| places | Geographic places |
+| place_categories | Place-category relationships |
+| place_hours_profiles | Opening-hours profiles |
+| place_weekly_hours | Weekly opening schedules |
+| reviews | User reviews |
+| review_embeddings | Review vector embeddings |
+| check_ins | Place check-ins |
+| audit_logs | Administrative audit records |
+
+## Existing DBMS features
+
+- PostGIS `geography(Point,4326)` for geographic locations.
+- GiST spatial index on place locations.
+- `nearby_places()` for nearby-place discovery.
+- `place_is_open()` for opening-status checks.
+- `published_place_rating_summary` view.
+- Timestamp, schedule-validation and audit triggers.
+- Full-text review search with a GIN index.
+- pgvector `vector(384)` column.
+- HNSW vector index.
+
+## Existing demo data
+
+The database currently contains approximately:
+
+- 5 users
+- 8 categories
+- 20 places
+- 22 place-category relationships
+- 32 reviews
+- 5 check-ins
+
+These are synthetic demo records around Bengaluru.
+
+**Important:** Existing demo users do not necessarily have login credentials. Create a new account through registration when testing authentication.
+
+# 6. Existing Next.js APIs
+
+The existing application provides:
+
+### Spatial APIs
+
+- Categories API: retrieve available place categories.
+- Nearby places API: perform database-backed spatial searches.
+- Place details API: retrieve place details and published reviews.
+
+See:
+
+```text
+docs/spatial-api.md
+```
+
+### Authentication APIs
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/auth/logout`
+- `GET /api/auth/me`
+
+### Authorization
+
+- `GET /api/admin/overview` requires an admin role.
+- Reusable `requireUser()` and `requireRole()` utilities are available in `web/lib/auth.ts`.
+
+Public nearby-place discovery and place-detail APIs must remain accessible without login.
+
+# 7. Person 2's Responsibilities
+
+Person 2 should extend the existing project rather than rebuilding it.
+
+## Module A: MongoDB GPS Trajectory Analytics
+
+Use MongoDB for GPS trace storage and trajectory analytics.
+
+Expected work:
+
+- Store GPS traces with user and device references.
+- Preserve ordered timestamped coordinate points.
+- Query trajectories by user, device and time range.
+- Implement MongoDB aggregation pipelines.
+- Calculate useful movement analytics such as distance travelled, duration and average speed where the available data supports them.
+- Provide APIs to retrieve trajectory data and analytics.
+- Integrate relevant results into the Next.js application.
+
+An earlier sample data structure used:
+
+```javascript
+{
+  userId: "user_001",
+  deviceId: "device_001",
+  points: [
+    {
+      timestamp: ISODate("2026-10-22T09:00:00Z"),
+      coordinates: [77.5946, 12.9716]
+    }
+  ]
+}
+```
+
+This is an example of the earlier sample shape, not a mandate to replace an existing collection. Inspect the actual MongoDB database and collection before changing its structure.
+
+Use GeoJSON coordinate order:
+
+```text
+[longitude, latitude]
+```
+
+## Module B: pgvector Semantic Search
+
+Use the existing PostgreSQL `review_embeddings` table and `vector(384)` column.
+
+Expected work:
+
+- Select and document a suitable embedding model.
+- Pin an immutable model revision.
+- Generate embeddings for existing published reviews.
+- Store embeddings in PostgreSQL.
+- Implement vector similarity search.
+- Use the existing HNSW index.
+- Expose a semantic review-search API.
+- Integrate semantic search into the frontend.
+
+The existing design proposes:
+
+```text
+sentence-transformers/all-MiniLM-L6-v2
+```
+
+with 384-dimensional embeddings and cosine similarity.
+
+Do not generate embeddings until the model and its immutable revision are documented and the vector dimensions are verified.
+
+## Module C: Review Intelligence
+
+Build on the existing reviews and embeddings.
+
+Expected features may include:
+
+- Review sentiment analysis.
+- Positive and negative review insights.
+- Keyword-based review analysis.
+- Semantic review retrieval.
+- Review summaries by place or category.
+
+Keep the implementation connected to actual database records. Do not use hardcoded sample results as the final implementation.
+
+## Module D: Analytics Dashboard
+
+Create a dashboard using real database-backed results.
+
+Potential metrics:
+
+- Total registered users.
+- Total places and categories.
+- Review counts and rating summaries.
+- GPS trajectory statistics.
+- Most visited or reviewed places, where supported by the data.
+- Semantic search and review intelligence insights.
+
+Use existing APIs and database utilities wherever possible.
+
+# 8. Integration Rules
+
+These rules are important.
+
+1. Do not replace or recreate Person 1's PostgreSQL schema.
+2. Do not delete database volumes or reset existing data.
+3. Do not overwrite existing API routes.
+4. Do not break the Leaflet map or its lifecycle fix.
+5. Do not weaken authentication or authorization.
+6. Keep database credentials and session secrets server-side.
+7. Use parameterized SQL queries.
+8. Keep MongoDB and PostgreSQL identifiers consistent.
+9. Use UTC timestamps for GPS data.
+10. Keep API responses and TypeScript types documented.
+11. Use database-backed results rather than hardcoded dashboard values.
+12. Add new migrations for any required schema changes.
+13. Add tests and update documentation for every new module.
+
+Before implementing a feature, inspect:
+
+```text
+docs/architecture.md
+docs/data-dictionary.md
+docs/integration-contracts.md
+docs/spatial-api.md
+docs/authentication.md
+```
+
+# 9. GitHub Workflow
+
+Shared repository:
+
+https://github.com/siasimran-magic/Meridian-Geospatial-Intelligence-Platform
+
+Recommended workflow:
+
+- Person 1 pushes the completed spatial and authentication implementation.
+- Person 2 clones the repository and creates a separate working branch.
+- Person 2 implements MongoDB, vector search, review intelligence and dashboard features.
+- Person 2 pushes their branch.
+- Both developers review and integrate the work.
+- Run the complete test suite before final submission.
+
+Do not force-push to the shared branch.
+
+# 10. Final Verification Checklist
+
+Before declaring the project complete:
+
+- [ ] Docker Compose starts both databases.
+- [ ] PostgreSQL migrations run correctly.
+- [ ] Existing demo data is preserved.
+- [ ] Spatial search works.
+- [ ] Map markers and filters work.
+- [ ] Registration and login work.
+- [ ] Authorization works.
+- [ ] MongoDB GPS data can be stored and queried.
+- [ ] GPS aggregation pipelines return correct results.
+- [ ] Review embeddings are generated and stored.
+- [ ] Semantic search returns relevant reviews.
+- [ ] Review intelligence works on actual review data.
+- [ ] Analytics dashboard uses real database results.
+- [ ] Existing features still work after integration.
+- [ ] `npm run lint` passes.
+- [ ] `npm run build` passes.
+- [ ] Documentation is updated.
+- [ ] All required work is pushed to GitHub.
+
+---
+
+# 11. Final Note to Person 2
+
+The PostgreSQL/PostGIS infrastructure, relational schema, spatial search, interactive map and authentication system are already implemented.
+
+Your job is to extend this foundation with MongoDB GPS analytics, pgvector semantic search, review intelligence and analytics.
+
+**Please inspect the existing code and database before making changes. Preserve the completed modules and integrate your work into the existing application.**
+
+The goal is one complete, integrated Geospatial Intelligence Platform — not separate disconnected demonstrations.
