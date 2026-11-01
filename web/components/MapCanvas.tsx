@@ -1,9 +1,48 @@
 "use client";
 
 import { useEffect, useRef, type MutableRefObject } from "react";
-import { divIcon, type Marker as LeafletMarker } from "leaflet";
+import { divIcon, type Map as LeafletMap, type Marker as LeafletMarker } from "leaflet";
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import type { NearbyPlace } from "@/types/places";
+
+const pendingMapRemoval = new WeakMap<LeafletMap, () => void>();
+
+function deferMapRemovalUntilDetached(this: LeafletMap) {
+  const container = this.getContainer();
+  const removeMap = this.remove.bind(this);
+  let observer: MutationObserver | null = null;
+  let removed = false;
+
+  const cancelPendingRemoval = () => {
+    observer?.disconnect();
+    observer = null;
+  };
+
+  pendingMapRemoval.set(this, cancelPendingRemoval);
+  this.remove = () => {
+    if (removed || observer) return this;
+    if (!container.isConnected) {
+      removed = true;
+      removeMap();
+      return this;
+    }
+
+    // Next Cache Components hides route trees with React Activity. Activity
+    // cleans up effects while keeping their DOM connected; React Leaflet's
+    // default MapContainer cleanup removes the map panes permanently. Keep the
+    // instance alive while its container is retained, and dispose it once the
+    // container is actually detached.
+    observer = new MutationObserver(() => {
+      if (!container.isConnected) {
+        removed = true;
+        cancelPendingRemoval();
+        removeMap();
+      }
+    });
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+    return this;
+  };
+}
 
 type MapCanvasProps = {
   center: [number, number];
@@ -57,6 +96,12 @@ function MapInteractions({
   });
 
   useEffect(() => {
+    pendingMapRemoval.get(map)?.();
+    const frame = window.requestAnimationFrame(() => map.invalidateSize({ pan: false, animate: false }));
+    return () => window.cancelAnimationFrame(frame);
+  }, [map]);
+
+  useEffect(() => {
     map.setView([latitude, longitude], map.getZoom(), { animate: true });
   }, [latitude, longitude, map]);
 
@@ -93,6 +138,7 @@ export default function MapCanvas({
       scrollWheelZoom
       className="map-canvas"
       zoomControl={false}
+      whenReady={deferMapRemovalUntilDetached}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

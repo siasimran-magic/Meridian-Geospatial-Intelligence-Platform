@@ -1,10 +1,11 @@
 # Geospatial Intelligence Platform
 
-Database infrastructure for local development. The existing Next.js application is in `web/`; this setup does not modify it.
+GeoIntel combines a Next.js spatial explorer with PostgreSQL/PostGIS search, account authentication, and a separate MongoDB service for the future GPS analytics work.
 
 ## Prerequisites
 
 - Docker Desktop (or Docker Engine) with Docker Compose v2, running with Linux containers.
+- Node.js 20.9 or later and npm for the Next.js application.
 - Git, if you are cloning the project.
 
 ## Database architecture
@@ -92,6 +93,22 @@ The verification script checks schema objects and constraints, invalid ratings/c
 Useful SQL examples are in `database/queries/nearby_places.sql` and `database/queries/review_keyword_search.sql`. `nearby_places()` accepts longitude, latitude, radius in meters (up to 100 km), optional category slug, and optional minimum rating. `place_is_open()` returns `true`, `false`, or `NULL` when hours are unknown or the place is unavailable. For writes, construct coordinates with `checked_geography_point(longitude, latitude)`; it validates raw bounds before PostGIS converts them to geography.
 
 For future schema changes, add a new numbered migration rather than editing an already-applied migration. Review and apply migrations explicitly; Compose does not automatically alter an existing database volume.
+
+## Authentication
+
+The Next.js application includes email/password registration and login, server-side sessions, and reusable role checks. Create `web/.env.local` from `web/.env.example`, set the server-only `DATABASE_URL`, and set `AUTH_SESSION_SECRET` to at least 32 random bytes. Generate a value with:
+
+```powershell
+node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"
+```
+
+Apply the additive authentication migration once to an existing database:
+
+```powershell
+Get-Content -Raw .\database\migrations\002_authentication.sql | docker compose exec -T postgres psql -v ON_ERROR_STOP=1 -U geointel_dev -d geointel
+```
+
+Then start the web app as described below. Visit `/register` or `/login`; public spatial discovery remains accessible without an account. Authentication endpoints and session behavior are documented in [docs/authentication.md](docs/authentication.md).
 
 ## Stop and storage
 

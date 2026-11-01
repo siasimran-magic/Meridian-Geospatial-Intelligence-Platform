@@ -14,6 +14,7 @@ type Center = { latitude: number; longitude: number };
 type CategoryResponse = { categories: PlaceCategory[] };
 type NearbyResponse = { places: NearbyPlace[]; count: number; error?: string };
 type DetailsResponse = { place?: PlaceDetails; error?: string };
+type SignedInUser = { userId: string; email: string; displayName: string; role: "user" | "admin" };
 
 const initialCenter: Center = { latitude: 12.9716, longitude: 77.5946 };
 
@@ -169,6 +170,7 @@ export default function SpatialSearch() {
   const [geoMessage, setGeoMessage] = useState<string | null>(null);
   const [geoLoading, setGeoLoading] = useState(false);
   const [showCustomRadius, setShowCustomRadius] = useState(false);
+  const [currentUser, setCurrentUser] = useState<SignedInUser | null>(null);
   const detailRequest = useRef<AbortController | null>(null);
 
   const radiusM = useMemo(() => {
@@ -193,6 +195,20 @@ export default function SpatialSearch() {
       });
     return () => controller.abort();
   }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch("/api/auth/me", { signal: controller.signal })
+      .then((response) => response.json())
+      .then((body: { user?: SignedInUser | null }) => setCurrentUser(body.user ?? null))
+      .catch(() => setCurrentUser(null));
+    return () => controller.abort();
+  }, []);
+
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    setCurrentUser(null);
+  };
 
   useEffect(() => {
     if (radiusError) return;
@@ -299,7 +315,7 @@ export default function SpatialSearch() {
           <span className="brand-copy"><strong>GeoIntel</strong><small>PLACE INTELLIGENCE</small></span>
         </Link>
         <div className="topbar-center"><span className="topbar-dot" />SPATIAL EXPLORER <span className="topbar-divider">/</span> BENGALURU DEMO</div>
-        <div className="topbar-right"><span className="database-indicator"><i />PostGIS connected</span><span className="avatar">GI</span></div>
+        <div className="topbar-right"><span className="database-indicator"><i />PostGIS connected</span>{currentUser ? <><span className="auth-greeting">{currentUser.displayName}</span><button className="auth-nav-button" onClick={() => void logout()}>Sign out</button></> : <><Link className="auth-nav-link" href="/login">Sign in</Link><Link className="auth-nav-button" href="/register">Create account</Link></>}</div>
       </header>
 
       <div className="workspace">
