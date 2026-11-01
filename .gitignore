@@ -1,0 +1,8 @@
+# Local credentials and environment overrides
+.env
+.env.*
+!.env.example
+
+# Local database files and logs
+*.log
+database/data/
