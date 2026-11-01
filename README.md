@@ -102,3 +102,25 @@ docker compose down
 ```
 
 Start again with `docker compose up -d`. PostgreSQL and MongoDB data reside in the named volumes `postgres_data` and `mongodb_data`, independently of container lifetimes. Do not use `docker compose down -v` unless you intend to remove the database volumes and all stored data.
+
+## Spatial search application
+
+The Next.js application lives in `web/`. Start the database services first, then create the server-only web environment file:
+
+```powershell
+Copy-Item .\web\.env.example .\web\.env.local
+```
+
+Set `DATABASE_URL` in `web/.env.local` to the PostgreSQL service. It must use the PostgreSQL credentials from the root `.env`, with any reserved password characters URL-encoded. Keep this value server-side; do not prefix it with `NEXT_PUBLIC_`. The local web environment file is ignored by Git.
+
+Install dependencies and run the web app:
+
+```powershell
+Set-Location .\web
+npm ci
+npm run dev
+```
+
+Open `http://localhost:3000`. The map starts near the seeded Bengaluru places. Use the browser location button (with browser permission) or click the map to set the search center. Search radius, database categories, minimum rating, opening status, and sort order update the PostGIS-backed results. Selecting a result opens its map popup and loads place details and published reviews.
+
+The API uses the server-side PostgreSQL pool from `DATABASE_URL`. Endpoints and parameters are documented in [docs/spatial-api.md](docs/spatial-api.md). The nearby search uses the `nearby_places()` database function and `place_is_open()`; results include GeoJSON point coordinates, distance in meters, ratings, categories, and weekly hours.
