@@ -5,7 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 export const metadata: Metadata = {
   title: "Geospatial Intelligence Platform | GPS Movement Analytics",
   description:
-    "DBMS Level 3 Mini-Project: MongoDB GPS trace storage, spatial indexing, aggregation pipelines, and interactive route visualization.",
+    "Unified PostGIS spatial discovery and MongoDB GPS movement analytics platform.",
 };
 
 export default function RootLayout({
@@ -24,12 +24,12 @@ export default function RootLayout({
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
             <div>
               <span className="font-semibold text-slate-400">
-                DBMS Level 3 Mini-Project
+                Geospatial Intelligence Platform
               </span>{" "}
-              — Geospatial Intelligence Platform (Person 2: MongoDB GPS Module)
+              — PostGIS Spatial Explorer and MongoDB GPS Analytics
             </div>
             <div className="font-mono text-[11px] text-slate-500">
-              MongoDB Community Server • Next.js App Router • TypeScript
+              PostgreSQL/PostGIS • MongoDB • Next.js App Router • TypeScript
             </div>
           </div>
         </footer>

@@ -1,0 +1,76 @@
+erDiagram
+    USERS {
+        uuid user_id PK
+        text email UK
+        text password_hash
+        text role
+    }
+    CATEGORIES {
+        uuid category_id PK
+        text name
+        text slug UK
+        uuid parent_category_id FK
+    }
+    PLACES {
+        uuid place_id PK
+        text name
+        geography_point location
+        text time_zone
+        uuid created_by FK
+    }
+    PLACE_CATEGORIES {
+        uuid place_id PK, FK
+        uuid category_id PK, FK
+    }
+    PLACE_HOURS_PROFILES {
+        uuid place_id PK, FK
+        timestamptz verified_at
+    }
+    PLACE_WEEKLY_HOURS {
+        uuid place_id PK, FK
+        smallint iso_weekday PK
+        smallint period_no PK
+        boolean is_closed
+        time opens_at
+        time closes_at
+    }
+    REVIEWS {
+        uuid review_id PK
+        uuid place_id FK
+        uuid author_user_id FK
+        numeric_1_to_5_half_step rating
+        text body
+        tsvector search_document
+    }
+    REVIEW_EMBEDDINGS {
+        uuid review_id PK, FK
+        vector_384 embedding
+        text model_name
+        text model_revision
+    }
+    CHECK_INS {
+        uuid check_in_id PK
+        uuid user_id FK
+        uuid place_id FK
+        timestamptz checked_in_at
+    }
+    AUDIT_LOGS {
+        bigint audit_log_id PK
+        uuid actor_user_id FK
+        text resource_type
+        uuid resource_id
+        timestamptz occurred_at
+    }
+
+    USERS ||--o{ PLACES : creates
+    USERS ||--o{ REVIEWS : writes
+    USERS ||--o{ CHECK_INS : records
+    USERS o|--o{ AUDIT_LOGS : performs
+    PLACES ||--o{ REVIEWS : receives
+    PLACES ||--o{ CHECK_INS : has
+    PLACES ||--o{ PLACE_CATEGORIES : classified_by
+    CATEGORIES ||--o{ PLACE_CATEGORIES : classifies
+    CATEGORIES o|--o{ CATEGORIES : parent_of
+    PLACES ||--o| PLACE_HOURS_PROFILES : may_publish
+    PLACE_HOURS_PROFILES ||--o{ PLACE_WEEKLY_HOURS : defines
+    REVIEWS ||--o| REVIEW_EMBEDDINGS : may_have
