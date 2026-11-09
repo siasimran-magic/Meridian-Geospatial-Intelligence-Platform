@@ -2,6 +2,7 @@ import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import type { PoolClient } from "pg";
 import { query } from "@/lib/db";
+import { getDatabase } from "@/lib/mongodb";
 
 export const SESSION_COOKIE = "geointel_session";
 export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
@@ -44,12 +45,28 @@ export function sessionCookieOptions() {
 
 export async function createSession(userId: string, client?: PoolClient): Promise<{ value: string; expiresAt: Date }> {
   const sessionId = randomUUID();
-  // Store exactly the same second precision that is signed into the cookie.
   const expiresAt = new Date((Math.floor(Date.now() / 1000) + SESSION_MAX_AGE_SECONDS) * 1000);
   const value = sessionCookieValue(sessionId, Math.floor(expiresAt.getTime() / 1000));
   const sql = "INSERT INTO auth_sessions (session_id, user_id, expires_at) VALUES ($1, $2, $3)";
-  if (client) await client.query(sql, [sessionId, userId, expiresAt]);
-  else await query(sql, [sessionId, userId, expiresAt]);
+  
+  try {
+    if (client) await client.query(sql, [sessionId, userId, expiresAt]);
+    else await query(sql, [sessionId, userId, expiresAt]);
+  } catch {
+    // Graceful fallback to MongoDB when PostgreSQL is unavailable
+    try {
+      const db = await getDatabase();
+      await db.collection("auth_sessions").insertOne({
+        session_id: sessionId,
+        user_id: userId,
+        expires_at: expiresAt,
+        created_at: new Date(),
+      });
+    } catch (mongoErr) {
+      console.error("Failed to persist session to MongoDB:", mongoErr);
+    }
+  }
+
   return {
     value,
     expiresAt,
@@ -74,19 +91,49 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
   const cookieValue = (await cookies()).get(SESSION_COOKIE)?.value;
   const decoded = decodeCookie(cookieValue);
   if (!decoded) return null;
-  const result = await query<SessionRow>(
-    `SELECT u.user_id AS "userId", u.email, u.display_name AS "displayName", u.role,
-            s.expires_at
-     FROM auth_sessions s
-     JOIN users u ON u.user_id = s.user_id
-     WHERE s.session_id = $1
-       AND s.expires_at = $2
-       AND s.expires_at > now()
-       AND s.revoked_at IS NULL
-       AND u.is_active`,
-    [decoded.sessionId, decoded.expiresAt],
-  );
-  return result.rows[0] ?? null;
+
+  try {
+    const result = await query<SessionRow>(
+      `SELECT u.user_id AS "userId", u.email, u.display_name AS "displayName", u.role,
+              s.expires_at
+       FROM auth_sessions s
+       JOIN users u ON u.user_id = s.user_id
+       WHERE s.session_id = $1
+         AND s.expires_at = $2
+         AND s.expires_at > now()
+         AND s.revoked_at IS NULL
+         AND u.is_active`,
+      [decoded.sessionId, decoded.expiresAt],
+    );
+    if (result.rows[0]) return result.rows[0];
+  } catch {
+    // PostgreSQL unavailable; fallback to MongoDB session verification
+  }
+
+  try {
+    const db = await getDatabase();
+    const session = await db.collection("auth_sessions").findOne({
+      session_id: decoded.sessionId,
+      expires_at: { $gt: new Date() },
+      revoked_at: { $exists: false },
+    });
+    if (!session) return null;
+
+    const user = await db.collection("users").findOne({
+      userId: session.user_id,
+      is_active: { $ne: false },
+    });
+    if (!user) return null;
+
+    return {
+      userId: user.userId,
+      email: user.email,
+      displayName: user.displayName || user.email.split("@")[0],
+      role: user.role || "user",
+    };
+  } catch {
+    return null;
+  }
 }
 
 export class AuthorizationError extends Error {
@@ -121,4 +168,3 @@ export function isSameOriginRequest(request: Request): boolean {
     return false;
   }
 }
-

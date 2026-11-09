@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { createSession, isSameOriginRequest, sessionCookieOptions } from "@/lib/auth";
 import { query } from "@/lib/db";
+import { getDatabase } from "@/lib/mongodb";
 
 type UserRow = { user_id: string; email: string; display_name: string; role: "user" | "admin"; password_hash: string | null };
 
@@ -25,6 +26,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Email or password is incorrect." }, { status: 401 });
   }
 
+  // 1. Try PostgreSQL first
   try {
     const found = await query<UserRow>(
       `SELECT user_id, email, display_name, role, password_hash
@@ -48,6 +50,28 @@ export async function POST(request: Request) {
     });
     return response;
   } catch {
-    return NextResponse.json({ error: "Login is unavailable. Please try again." }, { status: 503 });
+    // 2. Fallback to MongoDB when PostgreSQL is offline
+    try {
+      const db = await getDatabase();
+      const user = await db.collection("users").findOne({ email, is_active: { $ne: false } });
+      const valid = user?.passwordHash ? await bcrypt.compare(password, user.passwordHash) : false;
+      if (!user || !valid) return NextResponse.json({ error: "Email or password is incorrect." }, { status: 401 });
+      const session = await createSession(user.userId);
+
+      const response = NextResponse.json({ user: {
+        userId: user.userId,
+        email: user.email,
+        displayName: user.displayName,
+        role: user.role,
+      } });
+      response.cookies.set("geointel_session", session.value, {
+        ...sessionCookieOptions(),
+        expires: session.expiresAt,
+      });
+      return response;
+    } catch (err) {
+      console.error("Login fallback error:", err);
+      return NextResponse.json({ error: "Login is unavailable. Please try again." }, { status: 503 });
+    }
   }
 }

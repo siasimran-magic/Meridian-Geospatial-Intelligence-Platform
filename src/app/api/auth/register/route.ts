@@ -1,7 +1,9 @@
+import { randomUUID } from "node:crypto";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { createSession, isSameOriginRequest, sessionCookieOptions } from "@/lib/auth";
 import { withTransaction } from "@/lib/db";
+import { getDatabase } from "@/lib/mongodb";
 
 const BCRYPT_ROUNDS = 12;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -35,8 +37,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Password must be at least 12 characters and no more than 72 UTF-8 bytes." }, { status: 400 });
   }
 
+  const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
+
+  // 1. Try PostgreSQL first
   try {
-    const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
     const result = await withTransaction(async (client) => {
       const inserted = await client.query<{ user_id: string }>(
         `INSERT INTO users (email, display_name, password_hash, role)
@@ -53,10 +57,40 @@ export async function POST(request: Request) {
       expires: result.session.expiresAt,
     });
     return response;
-  } catch (error) {
-    if (typeof error === "object" && error !== null && "code" in error && error.code === "23505") {
+  } catch (pgError: unknown) {
+    if (typeof pgError === "object" && pgError !== null && "code" in pgError && pgError.code === "23505") {
       return NextResponse.json({ error: "An account with that email already exists." }, { status: 409 });
     }
-    return NextResponse.json({ error: "Registration is unavailable. Please try again." }, { status: 503 });
+
+    // 2. Fallback to MongoDB when PostgreSQL service is unavailable
+    try {
+      const db = await getDatabase();
+      const existing = await db.collection("users").findOne({ email });
+      if (existing) {
+        return NextResponse.json({ error: "An account with that email already exists." }, { status: 409 });
+      }
+
+      const newUserId = randomUUID();
+      await db.collection("users").insertOne({
+        userId: newUserId,
+        email,
+        displayName,
+        passwordHash,
+        role: "user",
+        is_active: true,
+        createdAt: new Date(),
+      });
+
+      const session = await createSession(newUserId);
+      const response = NextResponse.json({ user: { userId: newUserId, email, displayName, role: "user" } }, { status: 201 });
+      response.cookies.set("geointel_session", session.value, {
+        ...sessionCookieOptions(),
+        expires: session.expiresAt,
+      });
+      return response;
+    } catch (mongoError) {
+      console.error("Registration error:", mongoError);
+      return NextResponse.json({ error: "Registration is unavailable. Please try again." }, { status: 503 });
+    }
   }
 }
