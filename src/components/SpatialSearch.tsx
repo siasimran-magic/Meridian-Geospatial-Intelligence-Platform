@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Compass } from "lucide-react";
 import type { NearbyPlace, PlaceCategory, PlaceDetails, OpeningStatus } from "@/types/places";
 
 const MapCanvas = dynamic(() => import("@/components/MapCanvas"), {
@@ -308,15 +309,46 @@ export default function SpatialSearch() {
   const selectedCoordinates = `${center.latitude.toFixed(4)}, ${center.longitude.toFixed(4)}`;
 
   return (
-    <main className="app-shell">
-      <header className="topbar">
-        <Link className="brand" href="/" aria-label="GeoIntel home">
-          <span className="brand-mark"><span /></span>
-          <span className="brand-copy"><strong>GeoIntel</strong><small>PLACE INTELLIGENCE</small></span>
-        </Link>
-        <div className="topbar-center"><span className="topbar-dot" />SPATIAL EXPLORER <span className="topbar-divider">/</span> BENGALURU DEMO</div>
-        <div className="topbar-right"><span className="database-indicator"><i />PostGIS connected</span>{currentUser ? <><span className="auth-greeting">{currentUser.displayName}</span><button className="auth-nav-button" onClick={() => void logout()}>Sign out</button></> : <><Link className="auth-nav-link" href="/login">Sign in</Link><Link className="auth-nav-button" href="/register">Create account</Link></>}</div>
-      </header>
+    <div className="spatial-container space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-800 pb-5">
+        <div>
+          <div className="flex items-center space-x-2">
+            <h1 className="text-2xl font-black text-white flex items-center space-x-2">
+              <Compass className="w-6 h-6 text-cyan-400" />
+              <span>Spatial Explorer & Places</span>
+            </h1>
+            <span className="rounded-full bg-cyan-950 px-2.5 py-0.5 text-xs font-semibold text-cyan-300 border border-cyan-800">
+              Live Radius Search
+            </span>
+          </div>
+          <p className="text-xs text-slate-400 mt-1">
+            Query point-of-interest establishments within dynamic radius ranges across Bengaluru.
+          </p>
+        </div>
+
+        <div className="flex items-center space-x-3 text-xs">
+          {currentUser ? (
+            <div className="flex items-center space-x-2">
+              <span className="text-slate-400">Signed in as <strong className="text-cyan-300">{currentUser.displayName}</strong></span>
+              <button
+                onClick={() => void logout()}
+                className="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:bg-slate-700 transition"
+              >
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <Link href="/login" className="px-3 py-1.5 rounded-lg border border-slate-700 text-slate-300 hover:bg-slate-800 transition">
+                Sign in
+              </Link>
+              <Link href="/register" className="px-3 py-1.5 rounded-lg bg-cyan-600 text-white font-semibold hover:bg-cyan-500 transition">
+                Create account
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
 
       <div className="workspace">
         <aside className="search-panel">
@@ -429,6 +461,6 @@ export default function SpatialSearch() {
           <div className="map-attribution-note">Map data © OpenStreetMap contributors <span>·</span> Places from PostgreSQL + PostGIS</div>
         </section>
       </div>
-    </main>
+    </div>
   );
 }

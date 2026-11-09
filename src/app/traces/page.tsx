@@ -51,10 +51,10 @@ export default function TraceManagementPage() {
       if (json.success) {
         fetchTraces(pagination.page);
       } else {
-        alert(json.error || "Failed to delete trace");
+        alert(json.error || "Failed to delete route");
       }
     } catch {
-      alert("Failed to delete trace from MongoDB");
+      alert("Failed to delete route");
     }
   };
 
@@ -70,15 +70,14 @@ export default function TraceManagementPage() {
           <div className="flex items-center space-x-2">
             <h1 className="text-2xl font-black text-white flex items-center space-x-2">
               <ListFilter className="w-6 h-6 text-cyan-400" />
-              <span>Trace Management</span>
+              <span>Fleet Trajectories & Logs</span>
             </h1>
-            <span className="rounded-full bg-cyan-950 px-2.5 py-0.5 text-xs font-mono text-cyan-300 border border-cyan-800">
-              CRUD Operations
+            <span className="rounded-full bg-cyan-950 px-2.5 py-0.5 text-xs font-semibold text-cyan-300 border border-cyan-800">
+              Active Logs
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-1">
-            Search, filter, inspect, and delete GPS trajectories stored in MongoDB collection{" "}
-            <code className="text-cyan-300 font-mono">gps_traces</code>.
+            Search, filter, inspect, and manage ingested GPS route records and waypoint telemetry.
           </p>
         </div>
 
@@ -95,7 +94,7 @@ export default function TraceManagementPage() {
             className="flex items-center space-x-1.5 rounded-lg bg-gradient-to-r from-cyan-600 to-emerald-600 px-4 py-1.5 text-xs font-semibold text-white shadow-lg hover:from-cyan-500 hover:to-emerald-500 transition"
           >
             <Upload className="w-3.5 h-3.5" />
-            <span>Upload New Trace</span>
+            <span>Ingest Route</span>
           </button>
         </div>
       </div>

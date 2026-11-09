@@ -75,20 +75,20 @@ export default function AnalyticsDashboardPage() {
           <div className="flex items-center space-x-2">
             <h1 className="text-2xl font-black text-white flex items-center space-x-2">
               <BarChart3 className="w-6 h-6 text-cyan-400" />
-              <span>Spatial Analytics & Aggregation Engine</span>
+              <span>Fleet Movement Analytics & Trends</span>
             </h1>
-            <span className="rounded-full bg-cyan-950 px-2.5 py-0.5 text-xs font-mono text-cyan-300 border border-cyan-800">
-              MongoDB Aggregation
+            <span className="rounded-full bg-cyan-950 px-2.5 py-0.5 text-xs font-semibold text-cyan-300 border border-cyan-800">
+              Telemetry Intelligence
             </span>
           </div>
           <p className="text-xs text-slate-400 mt-1">
-            Data aggregated server-side via MongoDB multi-stage pipelines: $group, $facet, $project, and Haversine distance.
+            Real-time velocity profiles, spherical distance benchmarks, and fleet distribution across urban networks.
           </p>
         </div>
 
         <button
           onClick={fetchAnalytics}
-          className="flex items-center space-x-1.5 rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-1.5 text-xs text-slate-300 hover:bg-slate-700 self-start sm:self-auto"
+          className="flex items-center space-x-1.5 rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-700 self-start sm:self-auto transition"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           <span>Refresh Analytics</span>
@@ -99,7 +99,7 @@ export default function AnalyticsDashboardPage() {
         <div className="flex h-80 items-center justify-center">
           <div className="flex flex-col items-center space-y-3">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-cyan-500 border-t-transparent" />
-            <span className="text-xs text-slate-400">Computing aggregation pipelines...</span>
+            <span className="text-xs text-slate-400">Loading telemetry insights...</span>
           </div>
         </div>
       ) : (
@@ -111,103 +111,90 @@ export default function AnalyticsDashboardPage() {
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center space-x-2">
                   <TrendingUp className="w-4 h-4 text-cyan-400" />
-                  <h2 className="text-sm font-bold text-white">Distance Travelled by Trace</h2>
+                  <h2 className="text-sm font-bold text-white">Distance Travelled by Route</h2>
                 </div>
                 <span className="text-xs font-mono text-slate-400">Unit: Kilometres (km)</span>
               </div>
               <DistanceChart data={chartTraces} />
             </div>
 
-            {/* Chart 2: Speed Profile by Trace */}
+            {/* Chart 2: Speed Comparison */}
             <div className="rounded-xl border border-slate-800 bg-slate-900 p-5 shadow-xl space-y-3">
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center space-x-2">
                   <Activity className="w-4 h-4 text-emerald-400" />
-                  <h2 className="text-sm font-bold text-white">Speed Comparison by Trace</h2>
+                  <h2 className="text-sm font-bold text-white">Average vs Peak Velocity Profile</h2>
                 </div>
-                <span className="text-xs font-mono text-slate-400">Avg vs Max (km/h)</span>
+                <span className="text-xs font-mono text-slate-400">Unit: km/h</span>
               </div>
               <SpeedChart data={chartTraces} />
             </div>
 
-            {/* Chart 3: Daily Activity Trends */}
+            {/* Chart 3: Daily Activity Trend */}
             <div className="rounded-xl border border-slate-800 bg-slate-900 p-5 shadow-xl space-y-3">
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center space-x-2">
-                  <Compass className="w-4 h-4 text-cyan-400" />
-                  <h2 className="text-sm font-bold text-white">Daily Movement Activity</h2>
+                  <Layers className="w-4 h-4 text-teal-400" />
+                  <h2 className="text-sm font-bold text-white">Daily Trajectory Volume</h2>
                 </div>
-                <span className="text-xs font-mono text-slate-400">Distance over Time (km)</span>
+                <span className="text-xs font-mono text-slate-400">Chronological activity</span>
               </div>
               <DailyActivityChart data={dailyData} />
             </div>
 
-            {/* Chart 4: Activity by Device */}
+            {/* Chart 4: Device Distribution */}
             <div className="rounded-xl border border-slate-800 bg-slate-900 p-5 shadow-xl space-y-3">
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <div className="flex items-center space-x-2">
-                  <Layers className="w-4 h-4 text-indigo-400" />
-                  <h2 className="text-sm font-bold text-white">Activity Distribution by Device</h2>
+                  <Compass className="w-4 h-4 text-amber-400" />
+                  <h2 className="text-sm font-bold text-white">Device Fleet Distribution</h2>
                 </div>
-                <span className="text-xs font-mono text-slate-400">Traces & Distance</span>
+                <span className="text-xs font-mono text-slate-400">Unit: Total points recorded</span>
               </div>
               <DeviceDistributionChart data={deviceData} />
             </div>
           </div>
 
-          {/* User Movement Analytics Summary Table */}
-          <div className="rounded-xl border border-slate-800 bg-slate-900 shadow-xl overflow-hidden space-y-0">
-            <div className="border-b border-slate-800 bg-slate-900/80 px-4 py-3 flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Users className="w-4 h-4 text-cyan-400" />
-                <h2 className="text-xs font-bold uppercase tracking-wider text-slate-300">
-                  User-Wise Movement Aggregation Summary
-                </h2>
-              </div>
-              <span className="text-xs font-mono text-slate-400">
-                MongoDB $match + $group by userId
-              </span>
+          {/* User Multi-Trace Summary Cards */}
+          <div className="space-y-4 pt-4">
+            <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
+              <Users className="w-5 h-5 text-indigo-400" />
+              <h2 className="text-lg font-bold text-white">Fleet Operator Performance</h2>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="border-b border-slate-800 bg-slate-950 text-slate-400 uppercase tracking-wider font-semibold">
-                  <tr>
-                    <th className="px-4 py-3">User ID</th>
-                    <th className="px-4 py-3">Total Traces</th>
-                    <th className="px-4 py-3">Total Points</th>
-                    <th className="px-4 py-3">Total Distance</th>
-                    <th className="px-4 py-3">Avg Speed</th>
-                    <th className="px-4 py-3">Peak Speed</th>
-                    <th className="px-4 py-3">Associated Devices</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800/60 font-mono text-slate-300">
-                  {userSummaries.map((u) => (
-                    <tr key={u.userId} className="hover:bg-slate-800/40">
-                      <td className="px-4 py-3 font-semibold text-cyan-300">
-                        {u.userId}
-                      </td>
-                      <td className="px-4 py-3 font-semibold text-slate-200">
-                        {u.tracesCount}
-                      </td>
-                      <td className="px-4 py-3 text-amber-300">{u.totalPoints}</td>
-                      <td className="px-4 py-3 font-bold text-slate-100">
-                        {u.totalDistanceKm} km
-                      </td>
-                      <td className="px-4 py-3 text-emerald-300">
-                        {u.avgSpeedKmh} km/h
-                      </td>
-                      <td className="px-4 py-3 text-rose-300">
-                        {u.maxSpeedMps ? (u.maxSpeedMps * 3.6).toFixed(1) : 0} km/h
-                      </td>
-                      <td className="px-4 py-3 text-slate-400">
-                        {u.devices.join(", ")}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {userSummaries.map((u) => (
+                <div
+                  key={u.userId}
+                  className="rounded-xl border border-slate-800 bg-slate-900/90 p-4 space-y-3 shadow-lg"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-sm text-cyan-300">{u.userId}</span>
+                    <span className="text-xs rounded-full bg-slate-800 px-2 py-0.5 text-slate-400 border border-slate-700">
+                      {u.traceCount} {u.traceCount === 1 ? "route" : "routes"}
+                    </span>
+                  </div>
+
+                  <div className="space-y-1.5 text-xs text-slate-300">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Cumulative Distance:</span>
+                      <span className="font-semibold text-white">{u.totalDistanceKm} km</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Recorded Duration:</span>
+                      <span className="font-semibold text-amber-300">{u.totalDurationHours} hrs</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Fleet Average Speed:</span>
+                      <span className="font-semibold text-emerald-300">{u.avgSpeedKmh} km/h</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Indexed Points:</span>
+                      <span className="font-semibold text-slate-200">{u.totalPoints}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </>

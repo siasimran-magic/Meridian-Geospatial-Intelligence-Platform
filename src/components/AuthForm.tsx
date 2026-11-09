@@ -39,13 +39,13 @@ export default function AuthForm({ mode }: AuthFormProps) {
   return (
     <main className="auth-shell">
       <section className="auth-card">
-        <Link className="brand auth-brand" href="/" aria-label="GeoIntel home">
-          <span className="brand-mark"><span /></span>
-          <span className="brand-copy"><strong>GeoIntel</strong><small>PLACE INTELLIGENCE</small></span>
+        <Link className="flex items-center space-x-2.5 mb-6" href="/" aria-label="Meridian home">
+          <span className="font-extrabold text-xl tracking-tight text-white">Meridian</span>
+          <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800 text-cyan-300">Platform</span>
         </Link>
         <span className="eyebrow">YOUR GEOSPATIAL WORKSPACE</span>
         <h1>{isRegister ? "Create your account" : "Welcome back"}</h1>
-        <p className="auth-intro">{isRegister ? "Save your place intelligence experience with a personal account." : "Sign in to continue to GeoIntel."}</p>
+        <p className="auth-intro">{isRegister ? "Create an account to manage spatial intelligence and fleet telemetry." : "Sign in to continue to Meridian."}</p>
         <form className="auth-form" onSubmit={submit}>
           {isRegister && <label>Display name<input autoComplete="name" maxLength={80} required value={displayName} onChange={(event) => setDisplayName(event.target.value)} /></label>}
           <label>Email address<input type="email" autoComplete="email" maxLength={254} required value={email} onChange={(event) => setEmail(event.target.value)} /></label>
@@ -53,8 +53,8 @@ export default function AuthForm({ mode }: AuthFormProps) {
           {error && <p className="auth-error" role="alert">{error}</p>}
           <button className="auth-submit" type="submit" disabled={loading}>{loading ? "Please wait…" : isRegister ? "Create account" : "Sign in"}</button>
         </form>
-        <p className="auth-switch">{isRegister ? "Already have an account?" : "New to GeoIntel?"} <Link href={isRegister ? "/login" : "/register"}>{isRegister ? "Sign in" : "Create an account"}</Link></p>
-        <Link className="auth-back" href="/">← Back to spatial explorer</Link>
+        <p className="auth-switch">{isRegister ? "Already have an account?" : "New to Meridian?"} <Link href={isRegister ? "/login" : "/register"}>{isRegister ? "Sign in" : "Create an account"}</Link></p>
+        <Link className="auth-back" href="/">← Back to Overview</Link>
       </section>
     </main>
   );

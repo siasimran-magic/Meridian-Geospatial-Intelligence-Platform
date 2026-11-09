@@ -13,8 +13,8 @@ import {
   Plus,
   RefreshCw,
   ArrowRight,
-  Database,
-  ExternalLink,
+  Sparkles,
+  Layers,
 } from "lucide-react";
 import MetricCard from "@/components/dashboard/MetricCard";
 import TraceMapWrapper from "@/components/maps/TraceMapWrapper";
@@ -37,9 +37,8 @@ export default function OverviewDashboardPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isMapLoading, setIsMapLoading] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Fetch overview metrics from MongoDB
+  // Fetch overview metrics from backend
   const fetchOverview = async () => {
     try {
       const res = await fetch("/api/analytics/overview");
@@ -47,7 +46,7 @@ export default function OverviewDashboardPage() {
       if (json.success && json.data) {
         setOverview(json.data);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to fetch overview analytics:", err);
     }
   };
@@ -55,7 +54,6 @@ export default function OverviewDashboardPage() {
   // Fetch paginated traces
   const fetchTraces = async (page = 1, filters: { userId?: string; deviceId?: string } = {}) => {
     setIsLoading(true);
-    setErrorMsg(null);
     try {
       const queryParams = new URLSearchParams({
         page: page.toString(),
@@ -72,21 +70,18 @@ export default function OverviewDashboardPage() {
         if (json.pagination) {
           setPagination(json.pagination);
         }
-        // Auto-select first trace for map if none selected
         if (!selectedTraceId && json.data.length > 0) {
           handleSelectTraceForMap(json.data[0].id);
         }
-      } else {
-        setErrorMsg(json.error || "Failed to load GPS traces");
       }
-    } catch (err: any) {
-      setErrorMsg("Could not connect to MongoDB backend API");
+    } catch (err: unknown) {
+      console.error("Failed to fetch traces:", err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  // Fetch complete trace details and points for interactive map
+  // Load a full trace & its analytics for the map
   const handleSelectTraceForMap = async (traceId: string) => {
     setSelectedTraceId(traceId);
     setIsMapLoading(true);
@@ -105,15 +100,15 @@ export default function OverviewDashboardPage() {
       if (analyticsJson.success && analyticsJson.data) {
         setSelectedTraceAnalytics(analyticsJson.data);
       }
-    } catch (err) {
-      console.error("Error fetching trace for map:", err);
+    } catch (err: unknown) {
+      console.error("Error loading route details:", err);
     } finally {
       setIsMapLoading(false);
     }
   };
 
-  // Delete trace
   const handleDeleteTrace = async (traceId: string) => {
+    if (!confirm("Are you sure you want to delete this GPS route?")) return;
     try {
       const res = await fetch(`/api/traces/${traceId}`, { method: "DELETE" });
       const json = await res.json();
@@ -123,12 +118,13 @@ export default function OverviewDashboardPage() {
           setSelectedTraceFull(null);
           setSelectedTraceAnalytics(null);
         }
-        await Promise.all([fetchOverview(), fetchTraces(pagination.page)]);
+        fetchOverview();
+        fetchTraces(pagination.page);
       } else {
-        alert(json.error || "Failed to delete trace");
+        alert(json.message || "Failed to delete route");
       }
     } catch {
-      alert("Failed to delete trace from MongoDB");
+      alert("Error deleting route");
     }
   };
 
@@ -140,19 +136,18 @@ export default function OverviewDashboardPage() {
   return (
     <div className="space-y-8">
       {/* Top Hero Banner */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950 p-6 sm:p-8 border border-slate-800 shadow-2xl">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-cyan-950/60 p-6 sm:p-8 border border-slate-800 shadow-2xl">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="max-w-2xl space-y-2">
-            <div className="inline-flex items-center space-x-2 rounded-full bg-cyan-950/80 px-3 py-1 border border-cyan-800 text-xs font-mono text-cyan-300">
-              <Database className="w-3.5 h-3.5 text-cyan-400" />
-              <span>DBMS Level 3 • Real MongoDB Engine</span>
+            <div className="inline-flex items-center space-x-2 rounded-full bg-cyan-950/80 px-3 py-1 border border-cyan-800 text-xs font-medium text-cyan-300">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Real-Time Geospatial Intelligence</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-black tracking-tight text-white">
-              Geospatial Intelligence Platform
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+              Fleet Tracking & Movement Telemetry
             </h1>
             <p className="text-sm text-slate-300 leading-relaxed">
-              Person 2 GPS Analytics module: Real-time trajectory ingestion, 2dsphere spatial indexing,
-              and high-performance MongoDB aggregation pipelines for Bengaluru movement analysis.
+              High-precision trajectory ingestion, spherical distance computation, and live spatial boundary indexing across metropolitan corridors.
             </p>
           </div>
 
@@ -162,8 +157,8 @@ export default function OverviewDashboardPage() {
                 fetchOverview();
                 fetchTraces(pagination.page);
               }}
-              className="flex items-center space-x-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-xs font-medium text-slate-300 hover:bg-slate-700 transition"
-              title="Refresh database state"
+              className="flex items-center space-x-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-xs font-semibold text-slate-300 hover:bg-slate-700 hover:text-white transition"
+              title="Refresh telemetry feed"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span>Refresh</span>
@@ -173,14 +168,14 @@ export default function OverviewDashboardPage() {
               className="flex items-center space-x-1.5 rounded-lg bg-gradient-to-r from-cyan-600 to-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-lg shadow-cyan-950 hover:from-cyan-500 hover:to-emerald-500 transition"
             >
               <Plus className="w-4 h-4" />
-              <span>Upload Trace</span>
+              <span>Ingest Route</span>
             </button>
             <Link
-              href="/dbms-concepts"
-              className="flex items-center space-x-1.5 rounded-lg border border-amber-600/40 bg-amber-950/40 px-3.5 py-2 text-xs font-semibold text-amber-300 hover:bg-amber-900/40 transition"
+              href="/spatial"
+              className="flex items-center space-x-1.5 rounded-lg border border-cyan-800/60 bg-cyan-950/40 px-3.5 py-2 text-xs font-semibold text-cyan-300 hover:bg-cyan-900/40 transition"
             >
-              <span>Viva Guide</span>
-              <ExternalLink className="w-3.5 h-3.5" />
+              <Layers className="w-3.5 h-3.5" />
+              <span>Spatial Explorer</span>
             </Link>
           </div>
         </div>
@@ -189,40 +184,40 @@ export default function OverviewDashboardPage() {
       {/* 6 Real-time Metric Cards */}
       <section className="space-y-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-2">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center space-x-2">
             <Activity className="w-4 h-4 text-cyan-400" />
-            <span>Platform Movement Metrics (Aggregated from MongoDB)</span>
+            <span>Platform Telemetry Overview</span>
           </h2>
-          <span className="text-xs font-mono text-slate-500">
-            Pipeline: $facet + $group + Haversine
+          <span className="text-xs text-slate-500 font-medium">
+            Spherical Haversine Aggregations
           </span>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           <MetricCard
-            title="Total Traces"
+            title="Total Routes"
             value={overview?.totalTraces ?? "..."}
-            subtitle="Uploaded routes"
+            subtitle="Ingested trajectories"
             icon={Route}
             colorScheme="cyan"
           />
           <MetricCard
-            title="GPS Points"
+            title="GPS Telemetry Points"
             value={overview?.totalPoints ?? "..."}
-            subtitle="Embedded coordinates"
+            subtitle="Indexed coordinates"
             icon={MapPin}
             colorScheme="emerald"
           />
           <MetricCard
-            title="Total Distance"
+            title="Distance Tracked"
             value={overview ? overview.totalDistanceKm : "..."}
             unit="km"
-            subtitle="Calculated via Haversine"
+            subtitle="Spherical calculation"
             icon={Navigation}
             colorScheme="teal"
           />
           <MetricCard
-            title="Average Speed"
+            title="Average Velocity"
             value={overview ? overview.overallAvgSpeedKmh : "..."}
             unit="km/h"
             subtitle={`Peak: ${overview?.overallMaxSpeedKmh ?? 0} km/h`}
@@ -230,19 +225,19 @@ export default function OverviewDashboardPage() {
             colorScheme="amber"
           />
           <MetricCard
-            title="Active Users"
+            title="Active Operators"
             value={overview?.uniqueUsersCount ?? "..."}
-            subtitle={`${overview?.uniqueDevicesCount ?? 0} unique devices`}
+            subtitle={`${overview?.uniqueDevicesCount ?? 0} active devices`}
             icon={Users}
             colorScheme="indigo"
           />
           <MetricCard
-            title="Latest Trace"
+            title="Latest Dispatch"
             value={overview?.latestTrace ? overview.latestTrace.userId : "None"}
             subtitle={
               overview?.latestTrace
-                ? `${overview.latestTrace.pointsCount} pts recorded`
-                : "Awaiting data"
+                ? `${overview.latestTrace.pointsCount} points logged`
+                : "Awaiting telemetry"
             }
             icon={Compass}
             colorScheme="rose"
@@ -256,16 +251,16 @@ export default function OverviewDashboardPage() {
           <div>
             <h2 className="text-lg font-bold text-white flex items-center space-x-2">
               <MapPin className="w-5 h-5 text-cyan-400" />
-              <span>Interactive GPS Route Explorer</span>
+              <span>Interactive Route Visualizer</span>
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Select any trace to render its OpenStreetMap trajectory, inspect waypoints, and view movement dynamics.
+              Select any route to visualize waypoints, path dynamics, and telemetry benchmarks.
             </p>
           </div>
 
           {/* Trace Selector Dropdown */}
           <div className="flex items-center space-x-2">
-            <span className="text-xs text-slate-400 whitespace-nowrap">Selected Route:</span>
+            <span className="text-xs text-slate-400 whitespace-nowrap">Active Route:</span>
             <select
               value={selectedTraceId || ""}
               onChange={(e) => handleSelectTraceForMap(e.target.value)}
@@ -282,39 +277,39 @@ export default function OverviewDashboardPage() {
 
         {/* Selected Route Summary Banner */}
         {selectedTraceAnalytics && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 rounded-xl border border-slate-800 bg-slate-900/90 p-3 text-xs shadow-md">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 rounded-xl border border-slate-800 bg-slate-900/90 p-3.5 text-xs shadow-md">
             <div>
-              <span className="text-slate-500 block">User / Driver:</span>
+              <span className="text-slate-500 block text-[11px]">Operator ID:</span>
               <span className="font-semibold text-cyan-300">{selectedTraceAnalytics.userId}</span>
             </div>
             <div>
-              <span className="text-slate-500 block">Device Identifier:</span>
+              <span className="text-slate-500 block text-[11px]">Device Identifier:</span>
               <span className="font-mono text-emerald-300">{selectedTraceAnalytics.deviceId}</span>
             </div>
             <div>
-              <span className="text-slate-500 block">Trajectory Distance:</span>
+              <span className="text-slate-500 block text-[11px]">Total Distance:</span>
               <span className="font-bold text-white">
-                {selectedTraceAnalytics.totalDistanceKm} km ({selectedTraceAnalytics.totalDistanceMeters} m)
+                {selectedTraceAnalytics.totalDistanceKm} km
               </span>
             </div>
             <div>
-              <span className="text-slate-500 block">Elapsed Duration:</span>
+              <span className="text-slate-500 block text-[11px]">Duration:</span>
               <span className="font-semibold text-amber-300">
                 {selectedTraceAnalytics.durationFormatted}
               </span>
             </div>
             <div>
-              <span className="text-slate-500 block">Avg Recorded Speed:</span>
+              <span className="text-slate-500 block text-[11px]">Average Speed:</span>
               <span className="font-semibold text-slate-200">
-                {selectedTraceAnalytics.avgRecordedSpeedKmh} km/h ({selectedTraceAnalytics.avgRecordedSpeedMps} m/s)
+                {selectedTraceAnalytics.avgRecordedSpeedKmh} km/h
               </span>
             </div>
             <div className="flex items-center justify-end">
               <Link
                 href={`/traces/${selectedTraceAnalytics.traceId}`}
-                className="flex items-center space-x-1 rounded bg-cyan-950 border border-cyan-800 px-2.5 py-1 text-xs font-medium text-cyan-300 hover:bg-cyan-900 transition"
+                className="flex items-center space-x-1 rounded bg-cyan-950 border border-cyan-800 px-2.5 py-1 text-xs font-semibold text-cyan-300 hover:bg-cyan-900 transition"
               >
-                <span>Full Details</span>
+                <span>Telemetry View</span>
                 <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
@@ -322,12 +317,12 @@ export default function OverviewDashboardPage() {
         )}
 
         {/* The Interactive Map */}
-        <div className="relative">
+        <div className="relative rounded-xl overflow-hidden border border-slate-800 shadow-xl">
           {isMapLoading && (
-            <div className="absolute inset-0 z-30 flex items-center justify-center bg-slate-950/70 backdrop-blur-xs rounded-xl">
+            <div className="absolute inset-0 z-30 flex items-center justify-center bg-slate-950/70 backdrop-blur-xs">
               <div className="flex items-center space-x-2 text-cyan-400 text-xs font-semibold">
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-cyan-400 border-t-transparent" />
-                <span>Loading route points...</span>
+                <span>Loading route telemetry...</span>
               </div>
             </div>
           )}
@@ -336,7 +331,7 @@ export default function OverviewDashboardPage() {
             points={selectedTraceFull?.points || []}
             traceTitle={
               selectedTraceFull?.metadata?.routeTitle ||
-              (selectedTraceAnalytics ? `Bengaluru Route - ${selectedTraceAnalytics.userId}` : "Bengaluru Trajectory")
+              (selectedTraceAnalytics ? `Route: ${selectedTraceAnalytics.userId}` : "Bengaluru Trajectory")
             }
             userId={selectedTraceFull?.userId}
             deviceId={selectedTraceFull?.deviceId}
@@ -351,18 +346,18 @@ export default function OverviewDashboardPage() {
           <div>
             <h2 className="text-lg font-bold text-white flex items-center space-x-2">
               <Route className="w-5 h-5 text-cyan-400" />
-              <span>Stored GPS Traces</span>
+              <span>Active Trajectory Streams</span>
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              Live CRUD records from MongoDB collection: <code className="text-cyan-300 font-mono">gps_traces</code>
+              Chronological log of ingested fleet routes and coordinate waypoints
             </p>
           </div>
 
           <Link
             href="/traces"
-            className="flex items-center space-x-1 text-xs font-semibold text-cyan-400 hover:text-cyan-300"
+            className="flex items-center space-x-1 text-xs font-semibold text-cyan-400 hover:text-cyan-300 transition"
           >
-            <span>Full Trace Management</span>
+            <span>View All Records</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
