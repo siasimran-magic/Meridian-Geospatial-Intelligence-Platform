@@ -1,6 +1,7 @@
-# Geospatial Intelligence Platform — Person 2: GPS Analytics Module
+# Geospatial Intelligence Platform
 
-A full-stack, MongoDB-powered GPS trace ingestion, spatial analytics, and route visualization module developed for a **DBMS Level 3 Mini-Project**.
+Unified PostgreSQL/PostGIS place intelligence and MongoDB GPS movement
+analytics application developed for a **DBMS Level 3 Mini-Project**.
 
 ---
 
@@ -10,7 +11,9 @@ In our two-person mini-project:
 - **Person 1:** PostgreSQL + PostGIS points-of-interest (POIs) and spatial radius queries.
 - **Person 2 (This Module):** MongoDB GPS trace storage, spatial indexing, aggregation pipelines, movement metrics, and interactive route dashboard.
 
-Person 2 develops and operates independently, providing modular integration points to later overlay Person 1's PostGIS POIs on the route maps.
+The root Next.js application preserves both modules. PostgreSQL/PostGIS owns
+accounts and place intelligence; MongoDB continues to own the
+`geospatial_platform.gps_traces` collection and GPS analytics.
 
 ---
 
@@ -35,6 +38,10 @@ Person 2 develops and operates independently, providing modular integration poin
 5. **Academic Viva & DBMS Documentation:**
    - Theoretical breakdown in [`docs/DBMS_CONCEPTS.md`](./docs/DBMS_CONCEPTS.md).
    - Interactive viva guide and ready-to-run `mongosh` commands at `/dbms-concepts`.
+6. **Spatial Explorer & Authentication:**
+   - PostGIS place search, opening-status filters, reviews, bcrypt accounts,
+     signed HttpOnly sessions, and admin authorization at `/spatial`, `/login`,
+     and `/register`.
 
 ---
 
@@ -61,17 +68,24 @@ npm install
 # 2. Configure environment
 Copy-Item .env.example .env.local
 
-# 3. Seed realistic Bengaluru GPS data & build indexes
+# 3. Start PostgreSQL/PostGIS and MongoDB
+docker compose up -d
+
+# 4. Apply PostgreSQL migrations and demo data
+# See docs/integration.md for the psql commands
+
+# 5. Seed realistic Bengaluru GPS data & build indexes
 npm run seed
 
-# 4. Run automated test suite
+# 6. Run automated test suite
 npm test
 
-# 5. Start development server
+# 7. Start development server
 npm run dev
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) in your browser.
+Visit [http://localhost:3000](http://localhost:3000). Use `/spatial` for
+PostGIS place discovery and `/` or `/analytics` for GPS analytics.
 
 ---
 
@@ -80,3 +94,6 @@ Visit [http://localhost:3000](http://localhost:3000) in your browser.
 - [Setup & Run Instructions (PowerShell)](./docs/SETUP.md)
 - [REST API Specification](./docs/API.md)
 - [DBMS Concepts & Viva Guide](./docs/DBMS_CONCEPTS.md)
+- [Unified Integration Guide](./docs/integration.md)
+- [Spatial API](./docs/spatial-api.md)
+- [Authentication](./docs/authentication.md)

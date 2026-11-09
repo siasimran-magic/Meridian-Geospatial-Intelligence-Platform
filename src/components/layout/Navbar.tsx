@@ -16,6 +16,7 @@ export default function Navbar() {
 
   const navItems = [
     { name: "Overview", href: "/", icon: Compass },
+    { name: "Spatial Explorer", href: "/spatial", icon: Layers },
     { name: "Route Explorer", href: "/#explorer", icon: MapPin },
     { name: "Trace Management", href: "/traces", icon: ListFilter },
     { name: "Analytics & Trends", href: "/analytics", icon: BarChart3 },
@@ -34,10 +35,10 @@ export default function Navbar() {
             <div>
               <Link href="/" className="flex items-center space-x-2">
                 <span className="font-bold text-lg bg-gradient-to-r from-cyan-400 via-emerald-400 to-teal-300 bg-clip-text text-transparent">
-                  GeoIntel GPS
+                  GeoIntel Platform
                 </span>
                 <span className="text-xs px-2 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-800 text-cyan-300 font-mono">
-                  Person 2 • MongoDB
+                  PostGIS + MongoDB
                 </span>
               </Link>
               <p className="text-[11px] text-slate-400 hidden sm:block">
@@ -74,6 +75,9 @@ export default function Navbar() {
 
           {/* Database Status indicator */}
           <div className="flex items-center space-x-3">
+            <Link href="/login" className="hidden sm:inline text-xs text-slate-300 hover:text-cyan-300">
+              Sign in
+            </Link>
             <div className="flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/80 text-emerald-400 text-xs font-mono">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               <span className="hidden sm:inline">MongoDB:</span>
