@@ -144,7 +144,8 @@ export async function GET(request: NextRequest) {
                  n.distance_m ASC, n.place_id
         LIMIT 100
       `,
-      [latitude, longitude, radius, category, minimumRating, openingStatus, sort],
+      // nearby_places accepts (longitude, latitude), matching PostGIS point order.
+      [longitude, latitude, radius, category, minimumRating, openingStatus, sort],
     );
 
     const places: NearbyPlace[] = result.rows.map((row) => ({
