@@ -23,6 +23,11 @@
     "recharts": "^3.10.1",
     "zod": "^4.6.7"
   },
+  "overrides": {
+    "recharts": {
+      "es-toolkit": "1.47.1"
+    }
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.3.5",
     "@tailwindcss/turbopack": "^4",

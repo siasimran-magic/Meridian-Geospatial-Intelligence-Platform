@@ -25,8 +25,26 @@ export default function AuthForm({ mode }: AuthFormProps) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ displayName, email, password }),
       });
-      const body = (await response.json()) as { error?: string };
-      if (!response.ok) throw new Error(body.error ?? (isRegister ? "Registration failed." : "Login failed."));
+      let body: { error?: string } | null = null;
+      try {
+        body = (await response.json()) as { error?: string };
+      } catch {
+        // A server or proxy error may have an empty or non-JSON response.
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          body?.error ??
+            (response.status >= 500
+              ? "The authentication service is unavailable. Please try again in a moment."
+              : isRegister
+                ? "Registration failed. Please check your details and try again."
+                : "Login failed. Please check your details and try again."),
+        );
+      }
+      if (!body) {
+        throw new Error("The server returned an unexpected response. Please try again.");
+      }
       router.replace("/");
       router.refresh();
     } catch (reason) {

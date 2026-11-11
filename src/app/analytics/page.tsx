@@ -22,9 +22,11 @@ export default function AnalyticsDashboardPage() {
   const [deviceData, setDeviceData] = useState<DeviceActivityItem[]>([]);
   const [userSummaries, setUserSummaries] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   const fetchAnalytics = async () => {
     setIsLoading(true);
+    setLoadError(null);
     try {
       const [chartsRes, dailyRes, devicesRes, tracesRes] = await Promise.all([
         fetch("/api/analytics/charts?limit=10"),
@@ -33,12 +35,21 @@ export default function AnalyticsDashboardPage() {
         fetch("/api/traces?limit=50"),
       ]);
 
-      const [chartsJson, dailyJson, devicesJson, tracesJson] = await Promise.all([
-        chartsRes.json(),
-        dailyRes.json(),
-        devicesRes.json(),
-        tracesRes.json(),
-      ]);
+      const responses = [chartsRes, dailyRes, devicesRes, tracesRes];
+      const results = await Promise.all(
+        responses.map(async (response) => {
+          try {
+            return await response.json();
+          } catch {
+            return null;
+          }
+        }),
+      );
+      const [chartsJson, dailyJson, devicesJson, tracesJson] = results;
+
+      if (responses.some((response, index) => !response.ok || !results[index])) {
+        setLoadError("Some analytics data could not be reached. Check that MongoDB is running, then refresh.");
+      }
 
       if (chartsJson.success) setChartTraces(chartsJson.data || []);
       if (dailyJson.success) setDailyData(dailyJson.data || []);
@@ -58,6 +69,7 @@ export default function AnalyticsDashboardPage() {
       }
     } catch (err) {
       console.error("Failed to load analytics:", err);
+      setLoadError("Analytics could not connect to the API. Check that the app and MongoDB are running, then refresh.");
     } finally {
       setIsLoading(false);
     }
@@ -104,6 +116,20 @@ export default function AnalyticsDashboardPage() {
         </div>
       ) : (
         <>
+          {loadError && (
+            <div role="status" className="rounded-xl border border-amber-800/70 bg-amber-950/30 px-4 py-3 text-sm text-amber-200">
+              {loadError}
+            </div>
+          )}
+          {!loadError && chartTraces.length === 0 && dailyData.length === 0 && deviceData.length === 0 && userSummaries.length === 0 && (
+            <div className="rounded-xl border border-slate-800 bg-slate-900/70 px-6 py-8 text-center">
+              <h2 className="text-lg font-bold text-white">No telemetry data yet</h2>
+              <p className="mx-auto mt-2 max-w-xl text-sm text-slate-400">
+                Analytics summarizes uploaded GPS routes: distance and speed by route, daily activity, device usage, and operator totals.
+                Seed the demo routes with <code className="rounded bg-slate-800 px-1.5 py-0.5 text-cyan-300">npm run seed</code> or add a trace from Trace Management.
+              </p>
+            </div>
+          )}
           {/* Charts Grid: 2 Columns */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Chart 1: Distance by Trace */}
