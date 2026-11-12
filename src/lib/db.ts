@@ -9,11 +9,16 @@ function getPool(): Pool {
   }
 
   if (!globalWithPool.geointelPool) {
+    const isLocal =
+      process.env.DATABASE_URL.includes("127.0.0.1") ||
+      process.env.DATABASE_URL.includes("localhost");
+
     globalWithPool.geointelPool = new Pool({
       connectionString: process.env.DATABASE_URL,
+      ssl: isLocal ? undefined : { rejectUnauthorized: false },
       max: 10,
       idleTimeoutMillis: 30_000,
-      connectionTimeoutMillis: 5_000,
+      connectionTimeoutMillis: 10_000,
       application_name: "geointel-web",
     });
   }

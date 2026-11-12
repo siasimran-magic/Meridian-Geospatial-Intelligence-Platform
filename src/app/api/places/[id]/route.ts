@@ -107,7 +107,7 @@ export async function GET(
         FROM reviews r
         LEFT JOIN users u ON u.user_id = r.author_user_id
         WHERE r.place_id = $1::uuid
-          AND r.status = 'published'
+          AND r.moderation_status = 'published'
         ORDER BY r.created_at DESC
         LIMIT 20
       `,
