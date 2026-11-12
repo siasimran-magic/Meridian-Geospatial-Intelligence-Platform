@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1580" width="1920" height="1580" style="background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Soft Gradients matching Image 2 -->
+    <!-- Entity Gradient (Pastel Green) -->
+    <linearGradient id="entity-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#bbf7d0" />
+      <stop offset="100%" stop-color="#86efac" />
+    </linearGradient>
+    <!-- Relationship Gradient (Soft Lavender/Blue) -->
+    <linearGradient id="rel-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e0e7ff" />
+      <stop offset="100%" stop-color="#c7d2fe" />
+    </linearGradient>
+    <!-- Attribute Gradient (Pastel Pink/Rose) -->
+    <linearGradient id="attr-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffe4e6" />
+      <stop offset="100%" stop-color="#fecdd3" />
+    </linearGradient>
+    <filter id="box-shadow" x="-5%" y="-10%" width="110%" height="125%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-opacity="0.1" />
+    </filter>
+  </defs>
+
+  <!-- Title & Metadata Header -->
+  <g transform="translate(60, 40)">
+    <text x="0" y="24" font-size="16" font-weight="700" fill="#334155">12 November 2026</text>
+    <text x="0" y="44" font-size="12" fill="#64748b">Semester 5 · PES University</text>
+
+    <text x="900" y="22" font-size="24" font-weight="800" text-anchor="middle" fill="#0f172a" letter-spacing="-0.02em">
+      Meridian Geospatial Platform Conceptual ER Diagram (Chen Notation)
+    </text>
+    <text x="900" y="44" font-size="13" font-weight="600" text-anchor="middle" fill="#4338ca">
+      Department of Computer Science &amp; Engineering — DBMS Level 3 Experiential Learning Project
+    </text>
+
+    <text x="1800" y="20" font-size="14" font-weight="800" text-anchor="end" fill="#0f172a">
+      Sia Simran A (PES1UG24CS453)
+    </text>
+    <text x="1800" y="40" font-size="14" font-weight="800" text-anchor="end" fill="#0f172a">
+      Simret M Kotian (PES1UG24CS456)
+    </text>
+    <text x="1800" y="58" font-size="11" text-anchor="end" fill="#64748b">Chen's Notation: Rectangles, Diamonds &amp; Ellipses</text>
+
+    <line x1="0" y1="72" x2="1800" y2="72" stroke="#e2e8f0" stroke-width="2" />
+  </g>
+
+  <!-- Relationship & Attribute Connectors -->
+  <line x1="300" y1="460" x2="535" y2="460" stroke="#475569" stroke-width="1.3"  />
+  <line x1="645" y1="460" x2="880" y2="460" stroke="#475569" stroke-width="1.3"  />
+  <text x="390" y="452" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="790" y="452" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">N</text>
+  <line x1="880" y1="460" x2="1165" y2="460" stroke="#475569" stroke-width="1.3"  />
+  <line x1="1275" y1="460" x2="1560" y2="460" stroke="#475569" stroke-width="1.3"  />
+  <text x="975" y="452" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">M</text>
+  <text x="1465" y="452" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">N</text>
+  <line x1="1560" y1="436" x2="1560" y2="367" stroke="#475569" stroke-width="1.3"  />
+  <line x1="1615" y1="340" x2="1720" y2="340" stroke="#475569" stroke-width="1.3"  />
+  <line x1="1720" y1="340" x2="1720" y2="460" stroke="#475569" stroke-width="1.3"  />
+  <line x1="1720" y1="460" x2="1635" y2="460" stroke="#475569" stroke-width="1.3"  />
+  <text x="1572" y="395" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="1680" y="452" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">N</text>
+  <line x1="880" y1="436" x2="880" y2="357" stroke="#475569" stroke-width="1.3"  />
+  <line x1="880" y1="303" x2="880" y2="224" stroke="#475569" stroke-width="1.3"  />
+  <text x="894" y="385" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="894" y="260" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <line x1="955" y1="200" x2="1165" y2="200" stroke="#475569" stroke-width="1.3"  />
+  <line x1="1275" y1="200" x2="1485" y2="200" stroke="#475569" stroke-width="1.3"  />
+  <text x="1010" y="192" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="1430" y="192" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">N</text>
+  <line x1="300" y1="484" x2="465" y2="683" stroke="#475569" stroke-width="1.3"  />
+  <line x1="575" y1="737" x2="880" y2="936" stroke="#475569" stroke-width="1.3"  />
+  <text x="380" y="560" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="780" y="860" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">N</text>
+  <line x1="880" y1="484" x2="880" y2="683" stroke="#475569" stroke-width="1.3"  />
+  <line x1="880" y1="737" x2="880" y2="936" stroke="#475569" stroke-width="1.3"  />
+  <text x="894" y="550" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="894" y="870" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">N</text>
+  <line x1="955" y1="960" x2="1165" y2="960" stroke="#475569" stroke-width="1.3"  />
+  <line x1="1275" y1="960" x2="1485" y2="960" stroke="#475569" stroke-width="1.3"  />
+  <text x="1010" y="952" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="1430" y="952" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <line x1="300" y1="484" x2="300" y2="683" stroke="#475569" stroke-width="1.3"  />
+  <line x1="300" y1="737" x2="300" y2="936" stroke="#475569" stroke-width="1.3"  />
+  <text x="314" y="550" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="314" y="870" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">N</text>
+  <line x1="880" y1="484" x2="645" y2="683" stroke="#475569" stroke-width="1.3"  />
+  <line x1="535" y1="737" x2="300" y2="936" stroke="#475569" stroke-width="1.3"  />
+  <text x="780" y="560" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="380" y="860" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">N</text>
+  <line x1="300" y1="436" x2="300" y2="357" stroke="#475569" stroke-width="1.3"  />
+  <line x1="300" y1="303" x2="300" y2="224" stroke="#475569" stroke-width="1.3"  />
+  <text x="314" y="385" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="314" y="260" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">N</text>
+  <line x1="300" y1="984" x2="300" y2="1113" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="4 4" />
+  <line x1="300" y1="1167" x2="300" y2="1296" stroke="#0284c7" stroke-width="1.8" stroke-dasharray="4 4" />
+  <text x="314" y="1050" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">1</text>
+  <text x="314" y="1230" font-size="12" font-weight="800" fill="#0f172a" text-anchor="middle">N</text>
+  <line x1="300" y1="460" x2="100" y2="360" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="460" x2="100" y2="410" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="460" x2="100" y2="460" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="460" x2="100" y2="510" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="460" x2="100" y2="560" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="460" x2="100" y2="610" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="460" x2="700" y2="390" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="460" x2="740" y2="350" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="460" x2="1020" y2="350" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="460" x2="1060" y2="390" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="460" x2="700" y2="530" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="460" x2="760" y2="570" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="460" x2="1000" y2="570" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="460" x2="1060" y2="530" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="460" x2="880" y2="600" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="460" x2="1780" y2="410" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="460" x2="1780" y2="460" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="460" x2="1780" y2="510" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="460" x2="1780" y2="560" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="200" x2="1440" y2="110" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="200" x2="1560" y2="100" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="200" x2="1680" y2="110" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="200" x2="1720" y2="180" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="200" x2="1720" y2="230" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="960" x2="740" y2="1040" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="960" x2="830" y2="1070" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="960" x2="930" y2="1070" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="960" x2="1020" y2="1040" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="880" y1="960" x2="880" y2="1110" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="960" x2="1780" y2="910" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="960" x2="1780" y2="960" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="960" x2="1780" y2="1010" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="1560" y1="960" x2="1780" y2="1060" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="960" x2="100" y2="910" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="960" x2="100" y2="960" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="960" x2="100" y2="1010" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="200" x2="100" y2="160" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="200" x2="100" y2="210" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="200" x2="100" y2="260" stroke="#fda4af" stroke-width="1.3"  />
+  <line x1="300" y1="1320" x2="100" y2="1280" stroke="#7dd3fc" stroke-width="1.3"  />
+  <line x1="300" y1="1320" x2="100" y2="1330" stroke="#7dd3fc" stroke-width="1.3"  />
+  <line x1="300" y1="1320" x2="100" y2="1380" stroke="#7dd3fc" stroke-width="1.3"  />
+  <line x1="300" y1="1320" x2="500" y2="1320" stroke="#7dd3fc" stroke-width="1.3"  />
+  <line x1="300" y1="1320" x2="500" y2="1370" stroke="#7dd3fc" stroke-width="1.3"  />
+
+  <!-- Entity: User -->
+  <g id="entity-user">
+    <rect x="225" y="436" width="150" height="48" rx="4" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="300" y="465" font-size="14" font-weight="800" text-anchor="middle" fill="#14532d">User</text>
+  </g>
+
+  <!-- Entity: Place -->
+  <g id="entity-place">
+    <rect x="805" y="436" width="150" height="48" rx="4" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="880" y="465" font-size="14" font-weight="800" text-anchor="middle" fill="#14532d">Place</text>
+  </g>
+
+  <!-- Entity: Category -->
+  <g id="entity-category">
+    <rect x="1485" y="436" width="150" height="48" rx="4" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="1560" y="465" font-size="14" font-weight="800" text-anchor="middle" fill="#14532d">Category</text>
+  </g>
+
+  <!-- Entity: PlaceHoursProfile -->
+  <g id="entity-placehoursprofile">
+    <rect x="805" y="176" width="150" height="48" rx="4" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="880" y="205" font-size="14" font-weight="800" text-anchor="middle" fill="#14532d">PlaceHoursProfile</text>
+  </g>
+
+  <!-- Entity: PlaceWeeklyHours -->
+  <g id="entity-placeweeklyhours">
+    <rect x="1475" y="176" width="170" height="48" rx="4" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.8" filter="url(#box-shadow)" />
+    <rect x="1479" y="180" width="162" height="40" rx="2" fill="none" stroke="#16a34a" stroke-width="1.4" />
+    <text x="1560" y="205" font-size="14" font-weight="800" text-anchor="middle" fill="#14532d">PlaceWeeklyHours</text>
+  </g>
+
+  <!-- Entity: Review -->
+  <g id="entity-review">
+    <rect x="805" y="936" width="150" height="48" rx="4" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="880" y="965" font-size="14" font-weight="800" text-anchor="middle" fill="#14532d">Review</text>
+  </g>
+
+  <!-- Entity: ReviewEmbedding -->
+  <g id="entity-reviewembedding">
+    <rect x="1475" y="936" width="170" height="48" rx="4" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.8" filter="url(#box-shadow)" />
+    <rect x="1479" y="940" width="162" height="40" rx="2" fill="none" stroke="#16a34a" stroke-width="1.4" />
+    <text x="1560" y="965" font-size="14" font-weight="800" text-anchor="middle" fill="#14532d">ReviewEmbedding</text>
+  </g>
+
+  <!-- Entity: CheckIn -->
+  <g id="entity-checkin">
+    <rect x="225" y="936" width="150" height="48" rx="4" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="300" y="965" font-size="14" font-weight="800" text-anchor="middle" fill="#14532d">CheckIn</text>
+  </g>
+
+  <!-- Entity: AuthSession -->
+  <g id="entity-authsession">
+    <rect x="225" y="176" width="150" height="48" rx="4" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="300" y="205" font-size="14" font-weight="800" text-anchor="middle" fill="#14532d">AuthSession</text>
+  </g>
+
+  <!-- Entity: GPSTrace -->
+  <g id="entity-gpstrace">
+    <rect x="225" y="1296" width="150" height="48" rx="4" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="300" y="1325" font-size="14" font-weight="800" text-anchor="middle" fill="#14532d">GPSTrace</text>
+  </g>
+
+  <!-- Relationship: Creates -->
+  <g id="rel-creates">
+    <polygon points="590,433 645,460 590,487 535,460" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="590" y="465" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">Creates</text>
+  </g>
+
+  <!-- Relationship: ClassifiedIn -->
+  <g id="rel-classifiedin">
+    <polygon points="1220,433 1280,460 1220,487 1160,460" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="1220" y="465" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">ClassifiedIn</text>
+  </g>
+
+  <!-- Relationship: SubCategory -->
+  <g id="rel-subcategory">
+    <polygon points="1560,313 1615,340 1560,367 1505,340" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="1560" y="345" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">SubCategory</text>
+  </g>
+
+  <!-- Relationship: HasProfile -->
+  <g id="rel-hasprofile">
+    <polygon points="880,303 935,330 880,357 825,330" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="880" y="335" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">HasProfile</text>
+  </g>
+
+  <!-- Relationship: DefinesSchedule -->
+  <g id="rel-definesschedule">
+    <polygon points="1220,173 1285,200 1220,227 1155,200" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <polygon points="1220,176 1281,200 1220,224 1159,200" fill="none" stroke="#4338ca" stroke-width="1.4" />
+    <text x="1220" y="205" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">DefinesSchedule</text>
+  </g>
+
+  <!-- Relationship: WritesReview -->
+  <g id="rel-writesreview">
+    <polygon points="520,683 580,710 520,737 460,710" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="520" y="715" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">WritesReview</text>
+  </g>
+
+  <!-- Relationship: ReceivesReview -->
+  <g id="rel-receivesreview">
+    <polygon points="880,683 945,710 880,737 815,710" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="880" y="715" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">ReceivesReview</text>
+  </g>
+
+  <!-- Relationship: GeneratesEmbedding -->
+  <g id="rel-generatesembedding">
+    <polygon points="1220,933 1290,960 1220,987 1150,960" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <polygon points="1220,936 1286,960 1220,984 1154,960" fill="none" stroke="#4338ca" stroke-width="1.4" />
+    <text x="1220" y="965" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">GeneratesEmbedding</text>
+  </g>
+
+  <!-- Relationship: LogsCheckIn -->
+  <g id="rel-logscheckin">
+    <polygon points="300,683 355,710 300,737 245,710" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="300" y="715" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">LogsCheckIn</text>
+  </g>
+
+  <!-- Relationship: CheckedAt -->
+  <g id="rel-checkedat">
+    <polygon points="590,683 645,710 590,737 535,710" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="590" y="715" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">CheckedAt</text>
+  </g>
+
+  <!-- Relationship: Maintains -->
+  <g id="rel-maintains">
+    <polygon points="300,303 355,330 300,357 245,330" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="300" y="335" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">Maintains</text>
+  </g>
+
+  <!-- Relationship: RecordsTrace -->
+  <g id="rel-recordstrace">
+    <polygon points="300,1113 360,1140 300,1167 240,1140" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.8" filter="url(#box-shadow)" />
+    <text x="300" y="1145" font-size="12" font-weight="700" text-anchor="middle" fill="#312e81">RecordsTrace</text>
+  </g>
+  <g id="attr-userid">
+    <ellipse cx="100" cy="360" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="364" font-size="11" text-anchor="middle" fill="#881337" font-weight="700" text-decoration="underline">user_id</text>
+  </g>
+  <g id="attr-email">
+    <ellipse cx="100" cy="410" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="414" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">email</text>
+  </g>
+  <g id="attr-displayname">
+    <ellipse cx="100" cy="460" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="464" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">display_name</text>
+  </g>
+  <g id="attr-passwordhash">
+    <ellipse cx="100" cy="510" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="514" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">password_hash</text>
+  </g>
+  <g id="attr-role">
+    <ellipse cx="100" cy="560" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="564" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">role</text>
+  </g>
+  <g id="attr-isactive">
+    <ellipse cx="100" cy="610" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="614" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">is_active</text>
+  </g>
+  <g id="attr-placeid">
+    <ellipse cx="700" cy="390" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="700" y="394" font-size="11" text-anchor="middle" fill="#881337" font-weight="700" text-decoration="underline">place_id</text>
+  </g>
+  <g id="attr-name">
+    <ellipse cx="740" cy="350" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="740" y="354" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">name</text>
+  </g>
+  <g id="attr-description">
+    <ellipse cx="1020" cy="350" rx="56" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1020" y="354" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">description</text>
+  </g>
+  <g id="attr-address">
+    <ellipse cx="1060" cy="390" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1060" y="394" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">address</text>
+  </g>
+  <g id="attr-locationpt">
+    <ellipse cx="700" cy="530" rx="56" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="700" y="534" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">location (Pt)</text>
+  </g>
+  <g id="attr-timezone">
+    <ellipse cx="760" cy="570" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="760" y="574" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">time_zone</text>
+  </g>
+  <g id="attr-phone">
+    <ellipse cx="1000" cy="570" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1000" y="574" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">phone</text>
+  </g>
+  <g id="attr-isactive">
+    <ellipse cx="1060" cy="530" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1060" y="534" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">is_active</text>
+  </g>
+  <g id="attr-avgrating">
+    <ellipse cx="880" cy="600" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="4 3" filter="url(#box-shadow)" />
+    <text x="880" y="604" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">avg_rating</text>
+  </g>
+  <g id="attr-categoryid">
+    <ellipse cx="1780" cy="410" rx="56" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1780" y="414" font-size="11" text-anchor="middle" fill="#881337" font-weight="700" text-decoration="underline">category_id</text>
+  </g>
+  <g id="attr-name">
+    <ellipse cx="1780" cy="460" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1780" y="464" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">name</text>
+  </g>
+  <g id="attr-slug">
+    <ellipse cx="1780" cy="510" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1780" y="514" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">slug</text>
+  </g>
+  <g id="attr-description">
+    <ellipse cx="1780" cy="560" rx="56" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1780" y="564" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">description</text>
+  </g>
+  <g id="attr-isoweekday">
+    <ellipse cx="1440" cy="110" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1440" y="114" font-size="11" text-anchor="middle" fill="#881337" font-weight="600">iso_weekday</text>
+    <line x1="1407" y1="117" x2="1473" y2="117" stroke="#e11d48" stroke-width="1.2" stroke-dasharray="2 2" />
+  </g>
+  <g id="attr-periodno">
+    <ellipse cx="1560" cy="100" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1560" y="104" font-size="11" text-anchor="middle" fill="#881337" font-weight="600">period_no</text>
+    <line x1="1533" y1="107" x2="1587" y2="107" stroke="#e11d48" stroke-width="1.2" stroke-dasharray="2 2" />
+  </g>
+  <g id="attr-isclosed">
+    <ellipse cx="1680" cy="110" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1680" y="114" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">is_closed</text>
+  </g>
+  <g id="attr-opensat">
+    <ellipse cx="1720" cy="180" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1720" y="184" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">opens_at</text>
+  </g>
+  <g id="attr-closesat">
+    <ellipse cx="1720" cy="230" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1720" y="234" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">closes_at</text>
+  </g>
+  <g id="attr-reviewid">
+    <ellipse cx="740" cy="1040" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="740" y="1044" font-size="11" text-anchor="middle" fill="#881337" font-weight="700" text-decoration="underline">review_id</text>
+  </g>
+  <g id="attr-rating">
+    <ellipse cx="830" cy="1070" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="830" y="1074" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">rating</text>
+  </g>
+  <g id="attr-body">
+    <ellipse cx="930" cy="1070" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="930" y="1074" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">body</text>
+  </g>
+  <g id="attr-moderation">
+    <ellipse cx="1020" cy="1040" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1020" y="1044" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">moderation</text>
+  </g>
+  <g id="attr-createdat">
+    <ellipse cx="880" cy="1110" rx="48" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="880" y="1114" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">created_at</text>
+  </g>
+  <g id="attr-embeddingv384">
+    <ellipse cx="1780" cy="910" rx="60" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1780" y="914" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">embedding (v384)</text>
+  </g>
+  <g id="attr-modelname">
+    <ellipse cx="1780" cy="960" rx="60" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1780" y="964" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">model_name</text>
+  </g>
+  <g id="attr-modelrevision">
+    <ellipse cx="1780" cy="1010" rx="60" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1780" y="1014" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">model_revision</text>
+  </g>
+  <g id="attr-inputsha256">
+    <ellipse cx="1780" cy="1060" rx="60" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="1780" y="1064" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">input_sha256</text>
+  </g>
+  <g id="attr-checkinid">
+    <ellipse cx="100" cy="910" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="914" font-size="11" text-anchor="middle" fill="#881337" font-weight="700" text-decoration="underline">check_in_id</text>
+  </g>
+  <g id="attr-checkedinat">
+    <ellipse cx="100" cy="960" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="964" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">checked_in_at</text>
+  </g>
+  <g id="attr-source">
+    <ellipse cx="100" cy="1010" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="1014" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">source</text>
+  </g>
+  <g id="attr-sessionid">
+    <ellipse cx="100" cy="160" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="164" font-size="11" text-anchor="middle" fill="#881337" font-weight="700" text-decoration="underline">session_id</text>
+  </g>
+  <g id="attr-expiresat">
+    <ellipse cx="100" cy="210" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="214" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">expires_at</text>
+  </g>
+  <g id="attr-revokedat">
+    <ellipse cx="100" cy="260" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="264" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">revoked_at</text>
+  </g>
+  <g id="attr-id">
+    <ellipse cx="100" cy="1280" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="1284" font-size="11" text-anchor="middle" fill="#881337" font-weight="700" text-decoration="underline">_id</text>
+  </g>
+  <g id="attr-deviceid">
+    <ellipse cx="100" cy="1330" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="1334" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">deviceId</text>
+  </g>
+  <g id="attr-batterylevel">
+    <ellipse cx="100" cy="1380" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <text x="100" y="1384" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">batteryLevel</text>
+  </g>
+  <g id="attr-points">
+    <ellipse cx="500" cy="1320" rx="45" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5"  filter="url(#box-shadow)" />
+    <ellipse cx="500" cy="1320" rx="41" ry="15" fill="none" stroke="#e11d48" stroke-width="1.2" />
+    <text x="500" y="1324" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">points</text>
+  </g>
+  <g id="attr-distancekm">
+    <ellipse cx="500" cy="1370" rx="50" ry="18" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="4 3" filter="url(#box-shadow)" />
+    <text x="500" y="1374" font-size="11" text-anchor="middle" fill="#881337" font-weight="500">distance_km</text>
+  </g>
+
+  <!-- Legend Box -->
+  <g transform="translate(60, 1440)">
+    <rect x="0" y="0" width="1800" height="100" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2" />
+    <text x="24" y="26" font-size="13" font-weight="800" fill="#0f172a">CHEN'S ER NOTATION CONVENTIONS:</text>
+
+    <!-- Rectangle (Entity) -->
+    <rect x="30" y="42" width="70" height="24" rx="3" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.5" />
+    <text x="110" y="58" font-size="12" font-weight="700" fill="#14532d">Strong Entity Set</text>
+
+    <!-- Double Rectangle (Weak Entity) -->
+    <rect x="250" y="42" width="70" height="24" rx="3" fill="url(#entity-grad)" stroke="#16a34a" stroke-width="1.5" />
+    <rect x="253" y="45" width="64" height="18" rx="2" fill="none" stroke="#16a34a" stroke-width="1" />
+    <text x="330" y="58" font-size="12" font-weight="700" fill="#14532d">Weak Entity Set</text>
+
+    <!-- Diamond (Relationship) -->
+    <polygon points="460,42 485,54 460,66 435,54" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.5" />
+    <text x="495" y="58" font-size="12" font-weight="700" fill="#312e81">Relationship Set</text>
+
+    <!-- Double Diamond (Identifying Relationship) -->
+    <polygon points="630,42 655,54 630,66 605,54" fill="url(#rel-grad)" stroke="#4338ca" stroke-width="1.5" />
+    <polygon points="630,45 650,54 630,63 610,54" fill="none" stroke="#4338ca" stroke-width="1" />
+    <text x="665" y="58" font-size="12" font-weight="700" fill="#312e81">Identifying Relationship</text>
+
+    <!-- Oval (Attribute) -->
+    <ellipse cx="830" cy="54" rx="28" ry="12" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.4" />
+    <text x="830" y="58" font-size="10" font-weight="700" text-anchor="middle" text-decoration="underline" fill="#881337">Key</text>
+    <text x="870" y="58" font-size="12" font-weight="700" fill="#881337">Primary Key</text>
+
+    <!-- Multivalued Attribute -->
+    <ellipse cx="980" cy="54" rx="28" ry="12" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.4" />
+    <ellipse cx="980" cy="54" rx="24" ry="9" fill="none" stroke="#e11d48" stroke-width="1" />
+    <text x="1020" y="58" font-size="12" font-weight="700" fill="#881337">Multivalued Attribute</text>
+
+    <!-- Derived Attribute -->
+    <ellipse cx="1180" cy="54" rx="28" ry="12" fill="url(#attr-grad)" stroke="#e11d48" stroke-width="1.4" stroke-dasharray="3 2" />
+    <text x="1220" y="58" font-size="12" font-weight="700" fill="#881337">Derived Attribute</text>
+
+    <!-- Cardinality Ratio -->
+    <text x="1350" y="58" font-size="12" font-weight="800" fill="#0f172a">1 : N / M : N</text>
+    <text x="1440" y="58" font-size="12" fill="#334155">Structural Cardinality Ratios</text>
+
+    <text x="1650" y="58" font-size="12" font-weight="700" fill="#0284c7">NoSQL Boundary Ref (Dashed)</text>
+  </g>
+</svg>
