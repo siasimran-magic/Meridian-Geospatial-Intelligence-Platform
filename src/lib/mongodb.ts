@@ -1,5 +1,13 @@
 import { MongoClient, Db, Collection } from "mongodb";
+import dns from "node:dns";
 import { GPSTrace } from "@/types/gps";
+
+// Ensure DNS SRV lookups succeed on Windows/local networks for MongoDB Atlas
+if (process.env.MONGODB_URI?.startsWith("mongodb+srv://")) {
+  try {
+    dns.setServers(["8.8.8.8", "1.1.1.1"]);
+  } catch {}
+}
 
 const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/geospatial_platform";
 const options = {
